@@ -1,0 +1,28 @@
+<script>
+
+nxPageBehavior = {
+  observers:['checkLayout(begin)'],
+  checkLayout:function(begin){
+    this.querySystem().layout = this.layout;
+  },
+  changePath: function(path) {
+    this.querySystem().changePath(path);
+  },
+  querySystem: function(){
+    return document.querySelector("my-system");
+  }
+
+};
+
+nxTemplateBehavior = {
+  observers:['getPage(route)'],
+  getPage:function(route){
+    var queryTag = this.$$('tag-page-load');
+    queryTag.innerHTML='';
+    var getPage = document.createElement(route.app+'-'+route.page);
+    queryTag.appendChild(getPage);
+  }
+
+};
+
+</script>

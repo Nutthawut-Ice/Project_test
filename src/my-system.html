@@ -1,0 +1,118 @@
+<link rel="import" href="../bower_components/polymer/polymer.html">
+
+<link rel="import" href="../bower_components/app-route/app-location.html">
+<link rel="import" href="../bower_components/app-route/app-route.html">
+<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+
+<link rel="import" href="nx-param.html">
+<link rel="import" href="nx-behavior.html">
+
+<link rel="import" href="link.html">
+
+<dom-module id="my-system">
+  <template>
+    <app-location route="{{route}}"></app-location>
+    <app-route
+        route="{{route}}"
+        pattern="/:app/:page"
+        data="{{routeData}}"
+    >
+    </app-route>
+    <!--init-app route="{{routeData}}"></init-app-->
+
+    <tag-app-load></tag-app-load>
+
+  </template>
+  <script>
+    Polymer({
+      is:'my-system',
+      properties:{
+        role:{
+          type:Object,
+          value:[
+            { path:'app1/page1',role:['admin','manager','user1']}
+          ]
+        }
+      },
+      observers: [
+        '_routePageChanged(routeData)'
+      ],created:function(){
+        var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
+        this.auth = decoded;
+      },
+      _routePageChanged:function(routeData){
+        var app = this.routeData;
+        if(!this.checkRole(app)){
+          this.importHref(
+            this.resolveUrl('/src/apps/'+app.app+'/'+app.page+'.html'),
+
+            (e)=>{
+
+              var getPage = document.createElement(app.app+'-'+app.page);
+              getPage.begin = true;
+
+              if(this.layout!=this.oldLayout){
+                this.importHref(
+                  this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
+                  (e)=>{
+                    var queryTag = this.$$('tag-app-load');
+                    queryTag.innerHTML='';
+                    var getLayout = document.createElement(this.layout);
+                    getLayout.route = app;
+                    queryTag.appendChild(getLayout);
+                  },
+                  (e)=>{
+                    this.changePath('/error/404')
+                  },
+
+                  true
+                );
+              }else if(typeof this.layout == "undefined"){
+                var queryTag = this.$$('tag-app-load');
+                queryTag.innerHTML='';
+                queryTag.appendChild(getPage);
+              }else{
+                var queryTag = this.$$('tag-app-load>'+this.layout);
+                queryTag.route = app;
+              }
+
+              this.oldLayout = this.layout;
+
+
+            },
+
+            (e)=>{
+              this.changePath('/error/404')
+            },
+
+            true
+          );
+        }
+      },
+      changePath:function(path){
+         this.set('route.path', path);
+      },
+      checkRole:function(app){
+        var redirect = true;
+        this.role.map((obj,index)=>{
+          if(obj.path==(app.app+'/'+app.page)){
+            obj.role.map((sObj)=>{
+              if(this.auth.role==sObj){
+                redirect = false;
+              }
+            });
+          }else{
+            redirect = false;
+          }
+        });
+        //console.log('403:',redirect);
+        if(redirect){
+          this.changePath('/error/403');
+        }
+        return redirect;
+      }
+    });
+
+  </script>
+</dom-module>
