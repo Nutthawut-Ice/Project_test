@@ -1,28 +1,45 @@
+<link rel="import" href="apps/locales.html">
+
 <script>
 
-nxPageBehavior = {
-  observers:['checkLayout(begin)'],
-  checkLayout:function(begin){
-    this.querySystem().layout = this.layout;
-  },
-  changePath: function(path) {
-    this.querySystem().changePath(path);
-  },
-  querySystem: function(){
-    return document.querySelector("my-system");
+  localesBehavior = {
+    attached: function(){
+      this.language = querySystem.language;
+      this.resources = mergeLocales;
+    },
+    switchLanguage: function(){
+      if(querySystem.language=='th'){
+          querySystem.language = 'en';
+        }else{
+          querySystem.language = 'th';
+        }
+    }
   }
+  nxLocalesBehavior = [ Polymer.AppLocalizeBehavior, localesBehavior ];
 
-};
+  nxPageBehavior = {
+    changePath: function(path) {
+      this.querySystem().changePath(path);
+    },
+    querySystem: function(){
+      return document.querySelector("my-system");
+    },
+    nxSetLayout: function(layout){
+      this.querySystem().layout = layout;
+    },
+    nxSetTitle:function(txt){
+      document.title = txt;
+    }
+  };
 
-nxTemplateBehavior = {
-  observers:['getPage(route)'],
-  getPage:function(route){
-    var queryTag = this.$$('tag-page-load');
-    queryTag.innerHTML='';
-    var getPage = document.createElement(route.app+'-'+route.page);
-    queryTag.appendChild(getPage);
-  }
+  nxTemplateBehavior = {
+    observers:['getPage(page)'],
+    getPage:function(page){
+      var queryTag = this.$$('tag-page-load');
+      queryTag.innerHTML='';
+      queryTag.appendChild(page);
+    }
 
-};
+  };
 
 </script>

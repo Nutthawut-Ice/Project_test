@@ -91,7 +91,7 @@
       is:'user-page',
       behaviors:[nxPageBehavior],
       created:function(){
-        this.layout = 'layout-main';
+        this.nxSetLayout('layout-main');;
       },
       link:function(e){
         var args = e.target.getAttribute('data-href');

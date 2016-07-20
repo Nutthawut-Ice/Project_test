@@ -8,7 +8,7 @@
 <link rel="import" href="nx-param.html">
 <link rel="import" href="nx-behavior.html">
 
-<link rel="import" href="link.html">
+<link rel="import" href="/src/link.html">
 
 <dom-module id="my-system">
   <template>
@@ -19,12 +19,13 @@
         data="{{routeData}}"
     >
     </app-route>
-    <!--init-app route="{{routeData}}"></init-app-->
 
     <tag-app-load></tag-app-load>
 
   </template>
   <script>
+    querySystem = document.querySelector("my-system");
+
     Polymer({
       is:'my-system',
       properties:{
@@ -33,6 +34,11 @@
           value:[
             { path:'app1/page1',role:['admin','manager','user1']}
           ]
+        },
+        language: {
+          value: 'th',
+          type: String,
+          observer:'renderLanguage'
         }
       },
       observers: [
@@ -41,44 +47,49 @@
         var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
         this.auth = decoded;
       },
-      _routePageChanged:function(routeData){
-        var app = this.routeData;
-        if(!this.checkRole(app)){
+      _routePageChanged:function(routeData,newRender=false){
+
+        if(!this.checkRole(routeData)){
           this.importHref(
-            this.resolveUrl('/src/apps/'+app.app+'/'+app.page+'.html'),
+            this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
 
             (e)=>{
+              
+              var getPage = document.createElement(routeData.app+'-'+routeData.page);
+              getPage.route = routeData;
 
-              var getPage = document.createElement(app.app+'-'+app.page);
-              getPage.begin = true;
+              this.getLocales(this.layout,routeData.app,(data)=>{
+                mergeLocales = data;
+                if((this.layout!=this.oldLayout)||newRender){
+                  this.importHref(
+                    this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
+                    (e)=>{
+                      var queryTag = this.$$('tag-app-load');
+                      queryTag.innerHTML='';
+                      var getLayout = document.createElement(this.layout);
+                      getLayout.route = routeData;
+                      getLayout.page = getPage;
+                      queryTag.appendChild(getLayout);
+                    },
+                    (e)=>{
+                      this.changePath('/error/404')
+                    },
 
-              if(this.layout!=this.oldLayout){
-                this.importHref(
-                  this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
-                  (e)=>{
-                    var queryTag = this.$$('tag-app-load');
-                    queryTag.innerHTML='';
-                    var getLayout = document.createElement(this.layout);
-                    getLayout.route = app;
-                    queryTag.appendChild(getLayout);
-                  },
-                  (e)=>{
-                    this.changePath('/error/404')
-                  },
+                    true
+                  );
+                }else if(typeof this.layout == "undefined"){
+                  var queryTag = this.$$('tag-app-load');
+                  queryTag.innerHTML='';
+                  queryTag.appendChild(getPage);
+                }else{
+                  var queryTag = this.$$('tag-app-load>'+this.layout);
+                  queryTag.route = routeData;
+                  queryTag.page = getPage;
+                }
 
-                  true
-                );
-              }else if(typeof this.layout == "undefined"){
-                var queryTag = this.$$('tag-app-load');
-                queryTag.innerHTML='';
-                queryTag.appendChild(getPage);
-              }else{
-                var queryTag = this.$$('tag-app-load>'+this.layout);
-                queryTag.route = app;
-              }
+                this.oldLayout = this.layout;
 
-              this.oldLayout = this.layout;
-
+              });
 
             },
 
@@ -92,6 +103,64 @@
       },
       changePath:function(path){
          this.set('route.path', path);
+      },
+      getLocales:function(layout,app,callback){
+    
+
+        var mergeLayout = (callback) => {       
+          var mainAndLayout = JSON.parse(JSON.stringify(mainLocales));
+          this.importHref(
+            this.resolveUrl('/src/template/'+layout+'/locales.html'),
+            (e)=>{
+              var spLayout = layout.split('-');
+              var seLayout = spLayout[1][0].toUpperCase()+spLayout[1].split(spLayout[1][0])[1];
+              var dataLoad = window['layout'+seLayout+'Locales'];
+              for(var key in dataLoad) {
+                  for(var key2 in dataLoad[key]) {
+                    mainAndLayout[key][key2] = dataLoad[key][key2];
+                  }
+              }
+              callback(mainAndLayout);
+            },
+            (e)=>{
+              callback(mainAndLayout);
+            },
+            true
+          );
+        }
+
+        var mergeApp = (data,callback) => {
+          var allLocales = data;
+          this.importHref(
+            this.resolveUrl('/src/apps/'+app+'/locales.html'),
+            (e)=>{
+              var dataLoad = window[app+'Locales'];
+              for(var key in dataLoad) {
+                  for(var key2 in dataLoad[key]) {
+                    allLocales[key][key2] = dataLoad[key][key2];
+                  }
+              }
+              callback(allLocales);
+            },
+            (e)=>{
+              callback(allLocales);
+            },
+            true
+          );
+        }
+
+        mergeLayout((data)=>{
+          mergeApp(data,function(data){
+            callback(data);
+          });
+        });
+
+
+      },
+      renderLanguage:function(newVal,oldVal){
+        if(typeof oldVal != 'undefined'){
+          this._routePageChanged(this.routeData,true);
+        }
       },
       checkRole:function(app){
         var redirect = true;
