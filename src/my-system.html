@@ -48,6 +48,7 @@
         this.auth = decoded;
       },
       _routePageChanged:function(routeData,newRender=false){
+        if(!(typeof routeData.app == 'undefined' && typeof routeData.page == 'undefined')){
 
         if(!this.checkRole(routeData)){
           this.importHref(
@@ -99,6 +100,10 @@
 
             true
           );
+        }
+        }else{
+          //index
+          this.changePath('/connection/api');
         }
       },
       changePath:function(path){
