@@ -25,6 +25,13 @@ paper-fab.red {
   margin-right: 10px;
   margin-top: 10px;
 }
+.b{
+  position: fixed;
+  right: 0px;
+  bottom: 0px;
+  margin-right: 20px;
+  margin-bottom: 20px;
+}
 </style>
   <template>
 
@@ -41,7 +48,7 @@ paper-fab.red {
     <my-data menu={{menuData}}></my-data>
     <name-data data={{menuData}}></name-data>
 
-    <div class="horizontal end-justified layout top"><my-insert on-tap="_add"></my-insert></div>
+    <div class="horizontal end-justified layout top b"><my-insert on-tap="_add"></my-insert></div>
 
 
 
