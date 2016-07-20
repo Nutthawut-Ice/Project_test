@@ -1,16 +1,16 @@
-<link rel="import" href="../bower_components/polymer/polymer.html">
+<link rel="import" href="/bower_components/polymer/polymer.html">
 
-<link rel="import" href="../bower_components/app-route/app-location.html">
-<link rel="import" href="../bower_components/app-route/app-route.html">
-<link rel="import" href="../bower_components/iron-pages/iron-pages.html">
-<link rel="import" href="../bower_components/app-localize-behavior/app-localize-behavior.html">
+<link rel="import" href="/bower_components/app-route/app-location.html">
+<link rel="import" href="/bower_components/app-route/app-route.html">
+<link rel="import" href="/bower_components/iron-pages/iron-pages.html">
+<link rel="import" href="/bower_components/app-localize-behavior/app-localize-behavior.html">
 
-<link rel="import" href="nx-param.html">
-<link rel="import" href="nx-behavior.html">
+<link rel="import" href="/src/nx-param.html">
+<link rel="import" href="/src/nx-behavior.html">
 
-<link rel="import" href="/src/link.html">
+<link rel="import" href="/src/init-system.html">
 
-<dom-module id="my-system">
+<dom-module id="nx-system">
   <template>
     <app-location route="{{route}}"></app-location>
     <app-route
@@ -19,15 +19,21 @@
         data="{{routeData}}"
     >
     </app-route>
+    <app-route
+        route="{{route}}"
+        pattern="/:app"
+        data="{{routeAppOnly}}"
+    >
+    </app-route>
 
     <tag-app-load></tag-app-load>
 
   </template>
   <script>
-    querySystem = document.querySelector("my-system");
+    querySystem = document.querySelector("nx-system");
 
     Polymer({
-      is:'my-system',
+      is:'nx-system',
       properties:{
         role:{
           type:Object,
@@ -36,8 +42,15 @@
           ]
         },
         language: {
-          value: 'en',
           type: String,
+          value: function(){
+            if(typeof localStorage.nxLanguage == 'undefined'){
+              localStorage.setItem("nxLanguage", initSystem.language);
+            }
+
+            return localStorage.nxLanguage;
+            
+          },
           observer:'renderLanguage'
         }
       },
@@ -48,69 +61,70 @@
         this.auth = decoded;
       },
       _routePageChanged:function(routeData,newRender=false){
-        if(!(typeof routeData.app == 'undefined' && typeof routeData.page == 'undefined')){
+        if(!(typeof routeData.app == 'undefined' && typeof routeData.page == 'undefined' && this.routeAppOnly.app == '')){
 
-        if(!this.checkRole(routeData)){
-          this.importHref(
-            this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
+          if(!this.checkRole(routeData)){
+            this.importHref(
+              this.resolveUrl('/src/apps/'+routeData.app+'/'+routeData.page+'.html'),
 
-            (e)=>{
-              
-              var getPage = document.createElement(routeData.app+'-'+routeData.page);
-              getPage.route = routeData;
+              (e)=>{
+                
+                var getPage = document.createElement(routeData.app+'-'+routeData.page);
+                getPage.route = routeData;
 
-              this.getLocales(this.layout,routeData.app,(data)=>{
-                mergeLocales = data;
-                if((this.layout!=this.oldLayout)||newRender){
-                  this.importHref(
-                    this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
-                    (e)=>{
-                      var queryTag = this.$$('tag-app-load');
-                      queryTag.innerHTML='';
-                      var getLayout = document.createElement(this.layout);
-                      getLayout.route = routeData;
-                      getLayout.page = getPage;
-                      queryTag.appendChild(getLayout);
-                    },
-                    (e)=>{
-                      this.changePath('/error/404')
-                    },
+                this.getLocales(this.layout,routeData.app,(data)=>{
+                  mergeLocales = data;
+                  if((this.layout!=this.oldLayout)||newRender){
+                    this.importHref(
+                      this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
+                      (e)=>{
+                        var queryTag = this.$$('tag-app-load');
+                        queryTag.innerHTML='';
+                        var getLayout = document.createElement(this.layout);
+                        getLayout.route = routeData;
+                        getLayout.page = getPage;
+                        queryTag.appendChild(getLayout);
+                      },
+                      (e)=>{
+                        this.changePath('/error/404')
+                      },
 
-                    true
-                  );
-                }else if(typeof this.layout == "undefined"){
-                  var queryTag = this.$$('tag-app-load');
-                  queryTag.innerHTML='';
-                  queryTag.appendChild(getPage);
-                }else{
-                  var queryTag = this.$$('tag-app-load>'+this.layout);
-                  queryTag.route = routeData;
-                  queryTag.page = getPage;
-                }
+                      true
+                    );
+                  }else if(typeof this.layout == "undefined"){
+                    var queryTag = this.$$('tag-app-load');
+                    queryTag.innerHTML='';
+                    queryTag.appendChild(getPage);
+                  }else{
+                    var queryTag = this.$$('tag-app-load>'+this.layout);
+                    queryTag.route = routeData;
+                    queryTag.page = getPage;
+                  }
 
-                this.oldLayout = this.layout;
+                  this.oldLayout = this.layout;
 
-              });
+                });
 
-            },
+              },
 
-            (e)=>{
-              this.changePath('/error/404')
-            },
+              (e)=>{
+                this.changePath('/error/404')
+              },
 
-            true
-          );
-        }
+              true
+            );
+          }
         }else{
-          //index
-          this.changePath('/connection/api');
+          this.changePath(initSystem.indexPath);
+          window.history.pushState(null,null, initSystem.indexPath);
         }
       },
       changePath:function(path){
          this.set('route.path', path);
       },
       getLocales:function(layout,app,callback){
-    
+
+
 
         var mergeLayout = (callback) => {       
           var mainAndLayout = JSON.parse(JSON.stringify(mainLocales));
@@ -164,6 +178,7 @@
       },
       renderLanguage:function(newVal,oldVal){
         if(typeof oldVal != 'undefined'){
+          localStorage.nxLanguage = newVal;
           this._routePageChanged(this.routeData,true);
         }
       },

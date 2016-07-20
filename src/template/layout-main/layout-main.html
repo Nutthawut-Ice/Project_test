@@ -17,27 +17,41 @@
           <paper-toolbar>
             <paper-icon-button icon="menu" paper-drawer-toggle></paper-icon-button>
             <span class="title"><iron-icon icon="icons:perm-identity"></iron-icon>ระบบรักษาความมั่นคงปลอดภัยด้วยการพิสูจน์บุคคล</span>
-
+            <paper-toggle-button id="toggleLanguage" on-tap="changeLanguage" active="{{localizeToggle}}">เปลี่ยนภาษา {{localizeToggle}}</paper-toggle-button>
             <paper-icon-button id="number" icon="social:notifications"></paper-icon-button>
             <paper-badge for="number" label="3"></paper-badge>
-
+            
 
           </paper-toolbar>
           <div><tag-page-load></tag-page-load></div>
         </paper-header-panel>
       </paper-drawer-panel>
-
-
-
-
-
   </template>
 
 
   <script>
     Polymer({
       is:'layout-main',
-      behaviors:[nxTemplateBehavior]
+      behaviors:[nxTemplateBehavior,nxLocalesBehavior],
+      attached:function(){
+        this.$.toggleLanguage.checked = this.languageToToggle();
+      },
+      languageToToggle:function(){
+        
+        if(this.language=='th'){
+          return false;
+        }else{
+          return true;
+        }
+      },
+      changeLanguage:function(){
+        if(this.localizeToggle==true){
+          this.switchLanguage('en');
+        }else{
+          this.switchLanguage('th');
+        }
+
+      }
     });
   </script>
 
