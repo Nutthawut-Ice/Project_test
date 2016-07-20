@@ -64,9 +64,9 @@
 
     <div class="horizontal layout top">
       <div  class="flex-3 text">
-        <div class="topz"><my-title title="SMTP"></my-title></div>
-        <div class="topz"><my-title title="Username"></my-title></div>
-        <div class="topz"><my-title title="Password"></my-title></div>
+        <div class="topz">{{localize('smtp')}}</div>
+        <div class="topz">{{localize('username')}}</div>
+        <div class="topz">{{localize('password')}}</div>
       </div>
       <div class="left">
         <div class="topz"><iron-icon class="icon" icon="notification:sms-failed"></iron-icon></div>
@@ -105,7 +105,7 @@
   <script>
     Polymer({
       is: "connection-email",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

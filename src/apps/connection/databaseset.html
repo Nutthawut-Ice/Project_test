@@ -36,14 +36,17 @@
     </iron-pages>
 
   </div>
-
+  
+  <!--1234
+  {{localize('app')}}
+  <button on-tap="switchLanguage">switch</button>-->
 
   </template>
 
   <script>
     Polymer({
       is: "connection-databaseset",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

@@ -47,9 +47,9 @@
 
     <div class="horizontal layout top">
       <div class="flex-3">
-        <div><my-title title="Gate Way"></my-title></div>
-        <div class="topz"><my-title title="Username"></my-title></div>
-        <div class="topz"><my-title title="Password"></my-title></div>
+        <div>{{localize('gateway')}}</div>
+        <div class="topz">{{localize('username')}}</div>
+        <div class="topz">{{localize('password')}}</div>
       </div>
       <div class="flex-2">
         <div><iron-icon class="icon" icon="notification:sms-failed"></iron-icon></div>
@@ -58,7 +58,7 @@
       </div>
       <div class="flex-2">
         <div><input class="box" type="text" name="name" value=""></div>
-        <div class="topz"><input  type="text" name="name" value=""></div>
+        <div class="topz"><input class="box" type="text" name="name" value=""></div>
         <div class="topz"><input class="box" type="password" name="name" value=""></div>
       </div>
     </div>
@@ -88,7 +88,7 @@
   <script>
     Polymer({
       is: "connection-sms",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

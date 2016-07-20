@@ -42,11 +42,11 @@
         </div>
 
         <div class="horizontal layout top">
-          <div class="flex">Event</div>
-          <div class="flex">Description</div>
-          <div class="flex">Date</div>
-          <div class="flex">Connection</div>
-          <div class="flex">Application</div>
+          <div class="flex">{{localize('events')}}</div>
+          <div class="flex">{{localize('description')}}</div>
+          <div class="flex">{{localize('date')}}</div>
+          <div class="flex">{{localize('connection')}}</div>
+          <div class="flex">{{localize('application')}}</div>
         </div>
         <hr>
 
@@ -85,7 +85,11 @@
   </template>
   <script>
     Polymer({
-      is:'log-page'
+      is:'log-page',
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
+      created:function(){
+        this.nxSetLayout('layout-main');
+      }
     });
   </script>
 </dom-module>

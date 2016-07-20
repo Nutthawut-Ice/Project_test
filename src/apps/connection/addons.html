@@ -9,7 +9,7 @@
     border: 2px solid black;
     margin: 1px;
     padding: 10px;
-    font-size: 120%;
+    font-size: 100%;
   }
   .big{
     --iron-icon-height: 42px;
@@ -25,6 +25,7 @@
   .text{
     text-align: right;
   }
+
   paper-button.indigo {
     background-color: var(--paper-blue-500);
     color: white;
@@ -39,9 +40,9 @@
   </div>
 
   <div class="horizontal layout">
-    <div class="horizontal layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>AD</p><paper-toggle-button class="green"></paper-toggle-button></div>
-    <div class="horizontal layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>LDAP</p><paper-toggle-button class="green"></paper-toggle-button></div>
-    <div class="horizontal layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>SAML2</p><paper-toggle-button class="green"></paper-toggle-button></div>
+    <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>AD</p><paper-toggle-button class="green"></paper-toggle-button></div>
+    <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>LDAP</p><paper-toggle-button class="green"></paper-toggle-button></div>
+    <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>SAML2</p><paper-toggle-button class="green"></paper-toggle-button></div>
     </div>
 
   <div class="horizontal layout">
@@ -50,10 +51,10 @@
 
   <div class="horizontal layout left">
     <div class="text">
-      <div class="top"><my-title title="Server"></my-title></div>
-      <div class="top"><my-title title="Seacrh Base"></my-title></div>
-      <div class="top"><my-title title="Username"></my-title></div>
-      <div class="top"><my-title title="Password"></my-title></div>
+      <div class="top">{{localize('server')}}</div>
+      <div class="top">{{localize('searchBase')}}</div>
+      <div class="top">{{localize('username')}}</div>
+      <div class="top">{{localize('password')}}</div>
     </div>
     <div>
       <div class="top"><input  class="box" type="text" name="name" value=""></div>
@@ -61,8 +62,7 @@
       <div class="top"><input  class="box" type="text" name="name" value=""></div>
       <div class="top"><input  class="box" type="password" name="name" value=""></div>
     </div>
-  </div>
-
+</div>
   <div>
     <paper-button raised class="indigo">บันทึก</paper-button>
   </div>
@@ -72,7 +72,7 @@
   <script>
     Polymer({
       is: "connection-addons",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

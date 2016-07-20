@@ -6,7 +6,8 @@
     border: 2px solid black;
     margin: 1px;
     padding: 10px;
-    font-size: 120%;
+    font-size: 100%;
+    margin-top: 25px;
   }
   .big{
     --iron-icon-height: 42px;
@@ -20,16 +21,19 @@
    --paper-toggle-button-unchecked-button-color:  var(--paper-indigo-500);
    --paper-toggle-button-unchecked-ink-color: var(--paper-indigo-500);
  }
+ .p{
+    font-family: Arial, Helvetica, sans-serif;
+    
+  }
 </style>
   <template>
-    <!-- <page-second></page-second> -->
+    <div class="p">
     <div class="horizontal center-justified layout">
     <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>AD</p><paper-toggle-button class="green"></paper-toggle-button></div>
     <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>LDAP</p><paper-toggle-button class="green"></paper-toggle-button></div>
     <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon><p>SAML2</p><paper-toggle-button class="green"></paper-toggle-button></div>
     </div>
 
-<!-- <div class="horizontal justified layout tween"><iron-icon class="big" icon="icons:cloud-queue"></iron-icon>AD<paper-toggle-button checked></paper-toggle-button></div> -->
 
 
   </template>

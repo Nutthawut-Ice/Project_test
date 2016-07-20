@@ -4,6 +4,12 @@
   margin-top: 20px;
   margin-left: 50px;
 }
+.tops{
+  margin-top: 20px;
+}
+.text{
+  text-align: right;
+}
 .right{
   margin-right: 34em;
 }
@@ -16,6 +22,10 @@
 .down{
   margin-top: 30px;
 }
+.box{
+    border: 1px solid #ccc!important;
+    border-radius: 8px;
+  }
 paper-button.indigo {
   background-color: var(--paper-blue-500);
   color: white;
@@ -41,19 +51,18 @@ paper-button.indigo {
       </div>
 
       <div class="horizontal justified layout top">
-        <div class="left">Server</div>
-        <div class="right"><input type="text" name="name" value=""></div>
+        <div class="left text">
+          <div>Server</div>
+          <div class="tops">Username</div>
+          <div class="tops">Password</div>
+        </div>
+        <div class="right">
+          <div><input class="box" type="text" name="name" value=""></div>
+          <div class="tops"><input class="box" type="text" name="name" value=""></div>
+          <div class="tops"><input class="box" type="password" name="name" value=""></div>
+        </div>
       </div>
 
-      <div class="horizontal justified layout top">
-        <div class="left"><my-title title="Username"></my-title></div>
-        <div class="right"><input type="text" name="name" value=""></div>
-      </div>
-
-      <div class="horizontal justified layout top">
-        <div class="left"><my-title title="Password"></my-title></div>
-        <div class="right"><input type="password" name="name" value=""></div>
-      </div>
       <div>
         <paper-button raised class="indigo">บันทึก</paper-button>
       </div>

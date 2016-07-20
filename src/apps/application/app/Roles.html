@@ -32,15 +32,19 @@ paper-fab.red {
   margin-right: 20px;
   margin-bottom: 20px;
 }
+.p{
+    font-family: Arial, Helvetica, sans-serif;
+
+  }
 </style>
   <template>
 
     <hr>
 
-    <div class="horizontal layout demo">
-      <div class="flex">Role</div>
-      <div class="flex-3">Enable</div>
-      <div class="flex-2">Del</div>
+    <div class="horizontal layout demo p">
+      <div class="flex">{{localize('role')}}</div>
+      <div class="flex-3">{{localize('enable')}}</div>
+      <div class="flex-2">{{localize('delete')}}</div>
     </div>
 
     <hr>
@@ -57,17 +61,14 @@ paper-fab.red {
   <script>
   Polymer({
     is: "my-roles",
+    behaviors:[nxLocalesBehavior],
     properties: {
       data: {
         type: Object,
         notify: false,
       }
     },
-    _add:function () {
-      var time = Date.now();
-      this.push('data',{id:time, user:"Usernew", role: "User", enable:""});
-      // console.log(1);
-    }
+
 
   });
   </script>

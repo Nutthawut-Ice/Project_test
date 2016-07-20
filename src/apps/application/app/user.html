@@ -16,10 +16,10 @@
     <hr>
 
     <div class="horizontal layout demo">
-      <div class="flex">User</div>
-      <div class="flex">Role</div>
-      <div class="flex-3">Enable</div>
-      <div class="flex-2">Del</div>
+      <div class="flex">{{localize('user')}}</div>
+      <div class="flex">{{localize('role')}}</div>
+      <div class="flex-3">{{localize('enable')}}</div>
+      <div class="flex-2">{{localize('delete')}}</div>
     </div>
 
     <hr>
@@ -34,6 +34,7 @@
   <script>
     Polymer({
       is: "my-user",
+      behaviors:[nxLocalesBehavior]
 
 
     });

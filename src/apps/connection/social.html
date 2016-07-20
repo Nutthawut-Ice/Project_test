@@ -54,8 +54,8 @@
 
     <div class="horizontal layout">
       <div class="text">
-        <div class="top"><my-title title="google  Client ID"></my-title></div>
-        <div class="top"><my-title title="google  Client Secret"></my-title></div>
+        <div class="top">{{localize('googleId')}}</div>
+        <div class="top">{{localize('googleSecret')}}</div>
       </div>
       <div>
         <div class="top"><input class="box" type="text" name="name" value=""></div>
@@ -73,7 +73,7 @@
   <script>
     Polymer({
       is: "connection-social",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

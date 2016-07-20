@@ -54,23 +54,23 @@
       <div class="vertical layout">
         <div class="horizontal layout top">
           <div class="flex-3">
-            <div class="text">NAME</div>
+            <div class="text">{{localize('name')}}</div>
             <div class="top">Test</div>
-            <div class="top2 text">PROVIDER</div>
+            <div class="top2 text">{{localize('provider')}}</div>
             <div class="top text2">Google</div>
             <div class="top text2">LDAP</div>
             <div class="top text2">UPIS</div>
           </div>
           <div class="flex">
-            <div class="text">EMAIL</div>
+            <div class="text">{{localize('email')}}</div>
             <div class="top">test@email.com</div>
-            <div class="text top2">DEFAULT ACCOUNT</div>
+            <div class="text top2">{{localize('defaultAccount')}}</div>
             <div class="toggle"><paper-toggle-button></paper-toggle-button></div>
             <div class="toggle"><paper-toggle-button></paper-toggle-button></div>
             <div class="toggle"><paper-toggle-button></paper-toggle-button></div>
           </div>
           <div class="flex-2">
-            <div class="text">NICKNAME</div>
+            <div class="text">{{localize('nickname')}}</div>
             <div class="top">testter</div>
           </div>
         </div>
@@ -88,6 +88,7 @@
   <script>
     Polymer({
       is: "my-profile",
+      behaviors:[nxLocalesBehavior]
 
     });
   </script>
