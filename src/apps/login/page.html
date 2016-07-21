@@ -17,8 +17,8 @@
 
     <div class="horizontal layout">
     <paper-tabs id="plain-tabs" selected="{{selected}}" attr-for-selected="name" no-bar>
-      <paper-tab name="a">Login Page</paper-tab>
-      <paper-tab name="b">Password Reset</paper-tab>
+      <paper-tab name="a">{{localize('page')}}</paper-tab>
+      <paper-tab name="b">{{localize('reset')}}</paper-tab>
     </paper-tabs>
     </div>
 
@@ -32,7 +32,7 @@
   <script>
     Polymer({
       is:'login-page',
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

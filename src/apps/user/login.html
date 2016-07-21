@@ -18,8 +18,8 @@
 
     <div class="horizontal layout">
     <paper-tabs id="plain-tabs" selected="{{selected}}" attr-for-selected="name">
-      <paper-tab name="a">ข้อมูลส่วนตัว</paper-tab>
-      <paper-tab name="b">สิทธิการใช้งาน</paper-tab>
+      <paper-tab name="a">{{localize('profile')}}</paper-tab>
+      <paper-tab name="b">{{localize('licence')}}</paper-tab>
     </paper-tabs>
     </div>
 
@@ -33,7 +33,7 @@
   <script>
     Polymer({
       is: "user-login",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

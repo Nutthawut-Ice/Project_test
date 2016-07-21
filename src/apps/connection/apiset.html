@@ -26,8 +26,8 @@
 
   <div class="horizontal layout">
     <paper-tabs selected="{{selected}}" attr-for-selected="name">
-      <paper-tab name="0">ตั้งค่า</paper-tab>
-      <paper-tab name="1">ทดลองการเชื่อมต่อ</paper-tab>
+      <paper-tab name="0">{{localize('set')}}</paper-tab>
+      <paper-tab name="1">{{localize('test')}}</paper-tab>
     </paper-tabs>
   </div>
 
@@ -42,7 +42,7 @@
   <script>
     Polymer({
       is: "connection-apiset",
-      behaviors:[nxPageBehavior],
+      behaviors:[nxPageBehavior,nxLocalesBehavior],
       created:function(){
         this.nxSetLayout('layout-main');
       }

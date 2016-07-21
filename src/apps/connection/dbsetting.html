@@ -37,7 +37,7 @@ paper-button.indigo {
   <template>
     <div class="vertical layout">
       <div class="horizontal justified layout top">
-        <div class="left down"><my-title title="Database Type"></my-title></div>
+        <div class="left down">{{localize('type')}}</div>
         <div class="rightz">
           <paper-dropdown-menu label="Database">
             <paper-listbox class="dropdown-content">
@@ -52,9 +52,9 @@ paper-button.indigo {
 
       <div class="horizontal justified layout top">
         <div class="left text">
-          <div>Server</div>
-          <div class="tops">Username</div>
-          <div class="tops">Password</div>
+          <div>{{localize('server')}}</div>
+          <div class="tops">{{localize('username')}}</div>
+          <div class="tops">{{localize('password')}}</div>
         </div>
         <div class="right">
           <div><input class="box" type="text" name="name" value=""></div>
@@ -71,6 +71,7 @@ paper-button.indigo {
   <script>
     Polymer({
       is: "db-setting",
+      behaviors:[nxLocalesBehavior]
 
     });
   </script>
