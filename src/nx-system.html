@@ -180,9 +180,12 @@
         if(typeof oldVal != 'undefined'){
           localStorage.nxLanguage = newVal;
           var nxBinding = document.querySelectorAll('[nx-binding]');
-          nxBinding.forEach((item)=>{
-            item.language = newVal;
-          });
+          for (i = 0; i < nxBinding.length; i++) {
+            nxBinding[i].language = newVal;
+          }
+          // nxBinding.forEach((item)=>{
+          //   item.language = newVal;
+          // });
         }
       },
       checkRole:function(app){
