@@ -6,6 +6,7 @@
     attached: function(){
       this.language = querySystem.language;
       this.resources = mergeLocales;
+      this.setAttribute("nx-binding",true);
     },
     switchLanguage: function(local){
       querySystem.language = local;

@@ -10,14 +10,14 @@
 .text{
   text-align: right;
 }
-.right{
-  margin-right: 34em;
-}
-.rightz{
-  margin-right: 32em;
-}
 .left{
-  margin-left: 15em;
+  margin-left: 16em;
+}
+.leftz{
+  margin-left: 30px;
+}
+.lefts{
+  margin-left: 14em;
 }
 .down{
   margin-top: 30px;
@@ -36,9 +36,9 @@ paper-button.indigo {
   </style>
   <template>
     <div class="vertical layout">
-      <div class="horizontal justified layout top">
-        <div class="left down">{{localize('type')}}</div>
-        <div class="rightz">
+      <div class="horizontal layout top">
+        <div class="lefts down">{{localize('type')}}</div>
+        <div class="leftz">
           <paper-dropdown-menu label="Database">
             <paper-listbox class="dropdown-content">
               <paper-item>MySql</paper-item>
@@ -50,13 +50,13 @@ paper-button.indigo {
         </div>
       </div>
 
-      <div class="horizontal justified layout top">
+      <div class="horizontal layout top">
         <div class="left text">
           <div>{{localize('server')}}</div>
           <div class="tops">{{localize('username')}}</div>
           <div class="tops">{{localize('password')}}</div>
         </div>
-        <div class="right">
+        <div class="leftz">
           <div><input class="box" type="text" name="name" value=""></div>
           <div class="tops"><input class="box" type="text" name="name" value=""></div>
           <div class="tops"><input class="box" type="password" name="name" value=""></div>

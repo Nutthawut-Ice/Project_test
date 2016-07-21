@@ -60,7 +60,7 @@
         var decoded = jwt_decode('eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VyIjoiVXNlcjEiLCJyb2xlIjoiYWRtaW4ifQ.oRx_ieJoxSZPv7Y8lM03Qv8Qb24PVmuFpWBUxWEkBcg');
         this.auth = decoded;
       },
-      _routePageChanged:function(routeData,newRender=false){
+      _routePageChanged:function(routeData){
         if(!(typeof routeData.app == 'undefined' && typeof routeData.page == 'undefined' && this.routeAppOnly.app == '')){
 
           if(!this.checkRole(routeData)){
@@ -74,7 +74,7 @@
 
                 this.getLocales(this.layout,routeData.app,(data)=>{
                   mergeLocales = data;
-                  if((this.layout!=this.oldLayout)||newRender){
+                  if((this.layout!=this.oldLayout)){
                     this.importHref(
                       this.resolveUrl('/src/template/'+this.layout+'/'+this.layout+'.html'),
                       (e)=>{
@@ -179,7 +179,10 @@
       renderLanguage:function(newVal,oldVal){
         if(typeof oldVal != 'undefined'){
           localStorage.nxLanguage = newVal;
-          this._routePageChanged(this.routeData,true);
+          var nxBinding = document.querySelectorAll('[nx-binding]');
+          nxBinding.forEach((item)=>{
+            item.language = newVal;
+          });
         }
       },
       checkRole:function(app){
