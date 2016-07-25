@@ -8,7 +8,10 @@
   <script>
     Polymer({
       is:'error-404',
-      behaviors:[nxPageBehavior]
+      behaviors:[nxPageBehavior],
+      created:function(){
+        this.nxSetLayout('layout-main');
+      }
     });
   </script>
 </dom-module>

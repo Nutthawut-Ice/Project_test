@@ -124,55 +124,76 @@
       },
       getLocales:function(layout,app,callback){
 
+        var splitLayout = layout.split('-')[1];
+        var mergeLocales = () => {
+          
+          
+          var mergeData = JSON.parse(JSON.stringify(locales.global));
 
-
-        var mergeLayout = (callback) => {       
-          var mainAndLayout = JSON.parse(JSON.stringify(mainLocales));
-          this.importHref(
-            this.resolveUrl('/src/template/'+layout+'/locales.html'),
-            (e)=>{
-              var spLayout = layout.split('-');
-              var seLayout = spLayout[1][0].toUpperCase()+spLayout[1].split(spLayout[1][0])[1];
-              var dataLoad = window['layout'+seLayout+'Locales'];
-              for(var key in dataLoad) {
-                  for(var key2 in dataLoad[key]) {
-                    mainAndLayout[key][key2] = dataLoad[key][key2];
-                  }
+          for(var key in locales.layouts[splitLayout]) {
+              for(var key2 in locales.layouts[splitLayout][key]) {
+                mergeData[key][key2] = locales.layouts[splitLayout][key][key2];
               }
-              callback(mainAndLayout);
-            },
-            (e)=>{
-              callback(mainAndLayout);
-            },
-            true
-          );
+          }
+
+          for(var key in locales.apps[app]) {
+              for(var key2 in locales.apps[app][key]) {
+                mergeData[key][key2] = locales.apps[app][key][key2];
+              }
+          }
+          
+          callback(mergeData);
+
         }
 
-        var mergeApp = (data,callback) => {
-          var allLocales = data;
-          this.importHref(
-            this.resolveUrl('/src/apps/'+app+'/locales.html'),
-            (e)=>{
-              var dataLoad = window[app+'Locales'];
-              for(var key in dataLoad) {
-                  for(var key2 in dataLoad[key]) {
-                    allLocales[key][key2] = dataLoad[key][key2];
-                  }
-              }
-              callback(allLocales);
-            },
-            (e)=>{
-              callback(allLocales);
-            },
-            true
-          );
-        }
+        this.importHref(
+          this.resolveUrl('/src/apps/localize.html'),
+          (e)=>{
 
-        mergeLayout((data)=>{
-          mergeApp(data,function(data){
-            callback(data);
-          });
-        });
+            if(typeof locales == 'undefined'){
+              locales = {global:localize};
+            }
+
+            this.importHref(
+              this.resolveUrl('/src/template/'+layout+'/localize.html'),
+              (e)=>{
+
+                if(typeof locales.layouts == 'undefined'){
+                  locales.layouts = {};
+                }
+                if(typeof locales.layouts[splitLayout] == 'undefined'){
+                  locales.layouts[splitLayout] = localize;
+                }
+
+                this.importHref(
+                  this.resolveUrl('/src/apps/'+app+'/localize.html'),
+                  (e)=>{
+
+                    if(typeof locales.apps == 'undefined'){
+                      locales.apps = {};
+                    }
+
+                    if(typeof locales.apps[app] == 'undefined'){
+                      locales.apps[app] = localize;
+                    }
+
+                    mergeLocales();
+                  },
+                  null,
+                  true
+                );
+
+              },
+              null,
+              true
+            );
+
+          },
+          null,
+          true
+        );
+
+
 
 
       },
